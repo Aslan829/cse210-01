@@ -20,29 +20,36 @@ namespace cse210_01
         //set up a while loop here
         int turns = 1;
         char turn = 'N';
+        bool didPlay;
         
        // while(turns < 10)
-        while(turns < 10)
-        {
-            printBoard(gameArray);
-
-            if (turns % 2 == 1)
-                turn ='x';
-            else if (turns % 2 == 0)
-                turn = 'o';    
-        
-            playRound(turn, gameArray);
-
-            bool won = checkIfWon(turn, gameArray);
-            if (won == true)
+            while(turns < 10)
             {
-                Console.WriteLine(turn.ToString() + " won!");
-                break;
+               printBoard(gameArray);
+
+              if (turns % 2 == 1)
+                   turn ='x';
+               else if (turns % 2 == 0)
+                   turn = 'o';    
+        
+              didPlay = playRound(turn, gameArray);
+              
+
+               bool won = checkIfWon(turn, gameArray);
+              if (won == true)
+               {
+                  Console.WriteLine(turn.ToString() + " won!");
+                  printBoard(gameArray);
+                 break;
+              }
+                if (didPlay == true)
+                    turns++;
+
             }
 
-            turns++;
-
-        }
+        if (turns >= 10)
+            Console.WriteLine("Draw!");
+            printBoard(gameArray);
             
 
         }
@@ -57,7 +64,7 @@ namespace cse210_01
             Console.WriteLine(array[6] + "|" + array[7] + "|" + array[8]);
         }
 
-        static void playRound(char whoseTurn, List<string> array)
+        static bool playRound(char whoseTurn, List<string> array)
         {
             Console.WriteLine(whoseTurn +"'s turn to choose a square (1-9): ");
             string input = Console.ReadLine();
@@ -65,9 +72,15 @@ namespace cse210_01
 
             // if the number isn't here, then the spot is taken
             if (array[position - 1] != input.ToString())
+            {
                 Console.WriteLine("This is already put in!");
+                return false;
+            }
             else
+            {
                 array[position - 1] = whoseTurn.ToString();
+                return true;
+            }
         }
 
         static bool checkIfWon(char whoseTurn, List<String> array)
